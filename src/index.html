@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обробник BMP зображень</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="auth-container" class="container">
+        <h2>Вхід</h2>
+        <input type="text" id="username" placeholder="Ім'я користувача">
+        <input type="password" id="password" placeholder="Пароль">
+        <button id="login-btn">Увійти</button>
+    </div>
+
+    <div id="main-container" class="container hidden">
+        <div class="header">
+            <span id="user-info"></span>
+            <button id="logout-btn">Вийти</button>
+        </div>
+
+        <div class="main-content">
+            <div class="file-section">
+                <button id="open-file-btn">Відкрити BMP файл</button>
+                <div id="preview-container">
+                    <canvas id="preview"></canvas>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <h3>Обробка зображення</h3>
+                <select id="processType">
+                    <option value="1">Патерн 1 - Діагональні смуги</option>
+                    <option value="2">Патерн 2 - Шаховий</option>
+                    <option value="3">Патерн 3 - Радіальні хвилі</option>
+                </select>
+
+                <select id="colorScheme">
+                    <option value="1">Від червоного до синього</option>
+                    <option value="2">Від зеленого до пурпурного</option>
+                    <option value="3">Від жовтого до бірюзового</option>
+                </select>
+
+                <button id="process-btn">Обробити зображення</button>
+            </div>
+
+            <div class="steganography-section">
+                <h3>Стеганографія</h3>
+                <textarea id="message" placeholder="Введіть повідомлення для приховування"></textarea>
+                <button id="hide-msg-btn">Приховати повідомлення</button>
+                <button id="extract-msg-btn">Витягти повідомлення</button>
+                <div id="extracted-message"></div>
+            </div>
+
+            <div class="history-section">
+                <h3>Історія</h3>
+                <div id="recent-files">
+                    <h4>Останні файли</h4>
+                    <ul id="files-list"></ul>
+                </div>
+                <div id="recent-patterns">
+                    <h4>Останні патерни</h4>
+                    <ul id="patterns-list"></ul>
+                </div>
+                <div id="recent-messages">
+                    <h4>Останні повідомлення</h4>
+                    <ul id="messages-list"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <button id="help-btn">Керівництво користувача</button>
+            <button id="about-btn">Про програму</button>
+            <button id="authors-btn">Автори</button>
+        </div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+</html> 
