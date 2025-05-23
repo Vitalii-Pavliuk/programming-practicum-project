@@ -59,21 +59,25 @@ class App {
         input.click();
     }
 
-    displayPreview() {
+    displayPreview(imageData = null) {
         const canvas = document.getElementById('preview');
         const ctx = canvas.getContext('2d');
         
-        canvas.width = bmpService.width;
-        canvas.height = bmpService.height;
+        const sourceData = imageData || bmpService.imageData;
+        const width = imageData ? bmpService.width : bmpService.width;
+        const height = imageData ? bmpService.height : bmpService.height;
+        
+        canvas.width = width;
+        canvas.height = height;
         
         const rgbaData = ImageUtils.convertBGRtoRGBA(
-            bmpService.imageData,
-            bmpService.width,
-            bmpService.height
+            sourceData,
+            width,
+            height
         );
         
-        const imageData = new ImageData(rgbaData, bmpService.width, bmpService.height);
-        ctx.putImageData(imageData, 0, 0);
+        const canvasImageData = new ImageData(rgbaData, width, height);
+        ctx.putImageData(canvasImageData, 0, 0);
     }
 
     processImage() {
@@ -88,7 +92,13 @@ class App {
         authService.addToHistory('patterns', `Pattern ${pattern} with Color Scheme ${colorScheme}`);
 
         const newImageData = bmpService.createNewImage(pattern, colorScheme);
-        bmpService.saveToFile(newImageData, `processed_${this.currentFile.name}`);
+        
+        this.displayPreview(newImageData.slice(54));
+        
+        const timestamp = new Date().getTime().toString().slice(-6);
+        const newFileName = `p${pattern}_${timestamp}.bmp`;
+        
+        bmpService.saveToFile(newImageData, newFileName);
     }
 
     hideMessage() {
@@ -105,15 +115,19 @@ class App {
 
         authService.addToHistory('hiddenMessages', message);
 
-        const newImageData = bmpService.hideMessage(
-            message,
-            bmpService.createNewImage(
-                document.getElementById('processType').value,
-                document.getElementById('colorScheme').value
-            )
-        );
+        const pattern = document.getElementById('processType').value;
+        const colorScheme = document.getElementById('colorScheme').value;
         
-        bmpService.saveToFile(newImageData, `hidden_message_${this.currentFile.name}`);
+        const processedImageData = bmpService.createNewImage(pattern, colorScheme);
+        
+        const newImageData = bmpService.hideMessage(message, processedImageData);
+        
+        this.displayPreview(newImageData.slice(54));
+        
+        const timestamp = new Date().getTime().toString().slice(-6);
+        const newFileName = `hidden_${pattern}_${timestamp}.bmp`;
+        
+        bmpService.saveToFile(newImageData, newFileName);
     }
 
     extractMessage() {
